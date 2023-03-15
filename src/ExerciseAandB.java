@@ -1,3 +1,5 @@
+package src;
+
 public class ExerciseAandB {
   public static void main(String[] args){
 //    System.out.println("Biggest Number is " + findbiggestnumber(4, 6, 9));
