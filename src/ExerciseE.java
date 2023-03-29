@@ -7,7 +7,7 @@ public class ExerciseE {
 
      public Stack(int capacity) {
          elements = new int[capacity];
-       }
+     }
 
      public int push(int data) {
        if(top == elements.length){
@@ -18,22 +18,25 @@ public class ExerciseE {
          return data;
        }
 
-    public int pop() {
-          top--;
-          return elements[top];
+     public int pop() {
+       if(top != 0) {
+         top--;
+         return elements[top];
+       }
+       throw new StackException();
      }
 
      public int peek() {
          return elements[top - 1];
-       }
+     }
 
      public boolean isEmpty() {
          return top == 0;
-       }
+     }
 
      public int count() {
        return top;
-         }
+     }
 
      public int getCapacity() {
          return elements.length;
@@ -51,4 +54,59 @@ public class ExerciseE {
        throw cause;
      }
  }
+  public class Queue {
+    private int[] elements;
+    private int first = 1;
+    private int count = 0;
+
+    public Queue(int capacity) {
+      elements = new int[capacity];
+    }
+
+    public int add(int data) {
+      if(count != getCapacity()) {
+        elements[(count + first) % elements.length] = data;
+        count++;
+        return data;
+      }
+      throw new QueueException();
+    }
+
+    public int remove() {
+      if(isEmpty()) {
+        count--;
+        first++;
+        return elements[(first - 1) % elements.length];
+      }
+      throw new QueueException();
+    }
+
+    public int element() {
+      return elements[(first)%elements.length];
+    }
+
+    public int getCapacity() {
+      return elements.length;
+    }
+
+    public int size() {
+      return count;
+    }
+
+    public boolean isEmpty() {
+      return first == count;
+    }
+  }
+  public class QueueException extends RuntimeException{
+     public QueueException(){
+       System.out.println("Queue Error!");
+     }
+     public QueueException(String message){
+       System.out.println("Queue Error: " + message);
+     }
+     public QueueException(String message, Throwable cause) throws Throwable {
+       System.out.println("Queue Error: " + message);
+       throw cause;
+     }
+  }
 }
