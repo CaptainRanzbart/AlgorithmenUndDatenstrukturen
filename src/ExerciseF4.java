@@ -239,7 +239,49 @@ public class ExerciseF4 {
 
     @Override
     public ExerciseF4.AbstractBinaryTree remove(Comparable key) {
-      return null;
+      BinaryTree nodeToRemove = (BinaryTree) findNode(key);
+      BinaryTree parent = (BinaryTree) findParent(key);
+
+      if (nodeToRemove.isLeaf()) {
+        if (parent == null) {
+          this.setValue(null);
+        } else {
+          if (parent.isLeft(key)) {
+            setLeft(null);
+          } else {
+            setRight(null);
+          }
+        }
+      } else if ((nodeToRemove.getRight() == null && nodeToRemove.getLeft() != null) ||
+          (nodeToRemove.getRight() != null && nodeToRemove.getLeft() == null)) {
+        BinaryTree subtree = nodeToRemove.getRight() == null ? (BinaryTree) nodeToRemove.getLeft() : (BinaryTree) nodeToRemove.getRight();
+        if (parent == null) {
+          this.setLeft(subtree.getLeft());
+          this.setRight(subtree.getRight());
+          this.setValue(subtree.getValue());
+        } else {
+          if (parent.isLeft(key)) {
+            parent.setLeft(subtree);
+          } else {
+            parent.setRight(subtree);
+          }
+        }
+      } else if (nodeToRemove.getRight() != null && nodeToRemove.getLeft() != null) {
+        BinaryTree minElement = (BinaryTree) nodeToRemove.getRight().getMinKey();
+        BinaryTree minElementParent = (BinaryTree) minElement.findParent(minElement.getValue().getKey());
+        if (minElementParent.isLeft(minElement.getValue().getKey())) {
+          minElementParent.setLeft(null);
+        } else {
+          minElementParent.setRight(null);
+        }
+        nodeToRemove.setValue(minElement.getValue());
+        if (minElementParent != nodeToRemove) {
+          minElementParent.setLeft(minElement.getRight());
+        } else {
+          minElementParent.setRight(minElement.getRight());
+        }
+      }
+      return this;
     }
   }
 }
